@@ -3,7 +3,7 @@ const router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index', { title: 'HomePage AAI' });
+  res.render('index', { title: 'AAI-a5' });
 });
 
 router.get('/signin', (req, res, next) => {
