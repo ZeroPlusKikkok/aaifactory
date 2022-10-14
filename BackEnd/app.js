@@ -3,11 +3,31 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const expressSession = require('express-session')({
+  secret: 'some random string goes here',
+  resave: false,
+  saveUninitalzed: false,
+});
+
+const User = require('./models/user');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const apiRouter = require('./routes/api/index');
+const usersRouter = require('./routes/api/users');
+const authenticationRouter = require('./routes/api/authentication');
 
 const app = express();
+
+// Connect MongoDB
+mongoose.connect('mongodb://localhost/aaidb', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('Successfully connected MongoDB...'))
+  .catch((err) => console.log(err));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -18,9 +38,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressSession);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api', apiRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/authentication', authenticationRouter);
+
+// Configure Passport
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
