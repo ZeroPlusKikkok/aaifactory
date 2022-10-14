@@ -12,6 +12,6 @@ router.get('/signin', (req, res, next) => {
 
 router.get('/register', (req, res, next) => {
   res.render('register', { title: 'Register AAI' });
-});
+});  
 
 module.exports = router;
