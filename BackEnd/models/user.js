@@ -4,11 +4,8 @@ const { model, Schema } = mongoose;
 const passportLocalMongoose = require('passport-local-mongoose');
 
 const User = new Schema({
-  idCard: String,
-  firstName: String,
-  lastName: String,
-  dateStart: String,
   username: String,
+  email: String,
 },{
   timestamps: true
 });

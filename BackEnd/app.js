@@ -14,10 +14,11 @@ const expressSession = require('express-session')({
 
 const User = require('./models/user');
 
-const indexRouter = require('./routes/index');
-const apiRouter = require('./routes/api/index');
-const usersRouter = require('./routes/api/users');
-const authenticationRouter = require('./routes/api/authentication');
+const index = require('./routes/index');
+const api = require('./routes/api/index');
+const users = require('./routes/api/users');
+const employees = require('./routes/api/employees');
+const authentication = require('./routes/api/authentication');
 
 const app = express();
 
@@ -42,10 +43,11 @@ app.use(expressSession);
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', indexRouter);
-app.use('/api', apiRouter);
-app.use('/api/users', usersRouter);
-app.use('/api/authentication', authenticationRouter);
+app.use('/', index);
+app.use('/api', api);
+app.use('/api/users', users);
+app.use('/api/employees', employees);
+app.use('/api/authentication', authentication);
 
 // Configure Passport
 passport.use(new LocalStrategy(User.authenticate()));
