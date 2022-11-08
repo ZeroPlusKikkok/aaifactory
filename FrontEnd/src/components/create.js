@@ -3,10 +3,14 @@ import { useNavigate } from "react-router";
  
 export default function Create() {
  const [form, setForm] = useState({
-   name: "",
-   position: "",
-   level: "",
+  emCard: "",
+  firstName: "",
+  lastName: "",
+  position: "",
+  department: "",
+  dateStart: ""
  });
+
  const navigate = useNavigate();
  
  // These methods will update the state properties.
@@ -21,21 +25,21 @@ export default function Create() {
    e.preventDefault();
  
    // When a post request is sent to the create url, we'll add a new record to the database.
-   const newPerson = { ...form };
+   const newEmployee = { ...form };
  
-   await fetch("http://localhost:5000/record/add", {
+   await fetch("localhost:3000/api/employees/create", {
      method: "POST",
      headers: {
        "Content-Type": "application/json",
      },
-     body: JSON.stringify(newPerson),
+     body: JSON.stringify(newEmployee),
    })
    .catch(error => {
      window.alert(error);
      return;
    });
  
-   setForm({ name: "", position: "", level: "" });
+   setForm({ emCard: "", firstName: "", lastName: "", position: "", department: "", dateStart: "" });
    navigate("/");
  }
  
@@ -45,13 +49,33 @@ export default function Create() {
      <h3>Create New Record</h3>
      <form onSubmit={onSubmit}>
        <div className="form-group">
-         <label htmlFor="name">Name</label>
+         <label htmlFor="emCard">Employee Code</label>
          <input
            type="text"
            className="form-control"
-           id="name"
-           value={form.name}
-           onChange={(e) => updateForm({ name: e.target.value })}
+           id="emCard"
+           value={form.emCard}
+           onChange={(e) => updateForm({ emCard: e.target.value })}
+         />
+       </div>
+       <div className="form-group">
+         <label htmlFor="firstName">First Name</label>
+         <input
+           type="text"
+           className="form-control"
+           id="firstName"
+           value={form.firstName}
+           onChange={(e) => updateForm({ firstName: e.target.value })}
+         />
+       </div>
+       <div className="form-group">
+         <label htmlFor="lastName">Last Name</label>
+         <input
+           type="text"
+           className="form-control"
+           id="lastName"
+           value={form.lastName}
+           onChange={(e) => updateForm({ lastName: e.target.value })}
          />
        </div>
        <div className="form-group">
@@ -65,47 +89,32 @@ export default function Create() {
          />
        </div>
        <div className="form-group">
-         <div className="form-check form-check-inline">
-           <input
-             className="form-check-input"
-             type="radio"
-             name="positionOptions"
-             id="positionIntern"
-             value="Intern"
-             checked={form.level === "Intern"}
-             onChange={(e) => updateForm({ level: e.target.value })}
-           />
-           <label htmlFor="positionIntern" className="form-check-label">Intern</label>
-         </div>
-         <div className="form-check form-check-inline">
-           <input
-             className="form-check-input"
-             type="radio"
-             name="positionOptions"
-             id="positionJunior"
-             value="Junior"
-             checked={form.level === "Junior"}
-             onChange={(e) => updateForm({ level: e.target.value })}
-           />
-           <label htmlFor="positionJunior" className="form-check-label">Junior</label>
-         </div>
-         <div className="form-check form-check-inline">
-           <input
-             className="form-check-input"
-             type="radio"
-             name="positionOptions"
-             id="positionSenior"
-             value="Senior"
-             checked={form.level === "Senior"}
-             onChange={(e) => updateForm({ level: e.target.value })}
-           />
-           <label htmlFor="positionSenior" className="form-check-label">Senior</label>
-         </div>
+         <label htmlFor="department">Department</label>
+         <input
+           type="text"
+           className="form-control"
+           id="department"
+           value={form.department}
+           onChange={(e) => updateForm({ department: e.target.value })}
+         />
        </div>
+       <div className="form-group">
+         <label htmlFor="dateStart">Date Start</label>
+         <input
+           type="text"
+           className="form-control"
+           id="dateStart"
+           value={form.dateStart}
+           onChange={(e) => updateForm({ dateStart: e.target.value })}
+         />
+       </div>
+
+       <br />
+       
        <div className="form-group">
          <input
            type="submit"
-           value="Create person"
+           value="Create Employee"
            className="btn btn-primary"
          />
        </div>
