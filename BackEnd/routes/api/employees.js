@@ -43,7 +43,7 @@ router.get('/list', (req, res, next) => {
 });
 
 // Update (PUT) — Change something
-router.put('/update/:id', (req, res) => {
+router.put('/update/:Id', (req, res) => {
 
   if (!req.body) {
     return res.status(400).send({
@@ -51,9 +51,9 @@ router.put('/update/:id', (req, res) => {
     });
   }
 
-  const Id = req.params.id;
+  const Id = req.params.Id;
 
-  Employee.findByIdAndUpdate(id, req.body, (err, employees) => {
+  Employee.findByIdAndUpdate(Id, req.body, (err, employees) => {
     if (err) {
       return res.send(err);
     }
@@ -66,11 +66,11 @@ router.put('/update/:id', (req, res) => {
 });
 
 // Delete (DELETE)– Remove something
-router.delete('/delete/:id', (req, res) => {
+router.delete('/delete/:Id', (req, res) => {
 
-  const Id = req.params.id;
+  const Id = req.params.Id;
 
-  Employee.findByIdAndRemove(id, req.body, (err, employees) => {
+  Employee.findByIdAndRemove(Id, req.body, (err, employees) => {
     if (err) {
       return res.send(err);
     }
