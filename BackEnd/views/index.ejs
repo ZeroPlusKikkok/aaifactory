@@ -6,6 +6,13 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <link href="https://fonts.googleapis.com/css?family=Niramit" rel="stylesheet">
+
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-light">
@@ -46,10 +53,66 @@
         </div>
       </div>
     </nav>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+
+    
+    <div>
+      <h3>Employee List</h3>
+      <table id="EmployeeTable" class="table table-striped" style="width:100%">
+        <thead>
+          <tr>
+            <th>Em Card</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Position</th>
+            <th>Department</th>
+            <th>Date Start</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>Em Card</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Position</th>
+            <th>Department</th>
+            <th>Date Start</th>
+            <th>Action</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <script>
+      const getData = async () => {
+        const response = await fetch("http://localhost:3000/api/employees/list", {
+          method: "GET",
+        })
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+      };
+      getData();   
+      
+      $(document).ready(function () {
+        $('#EmployeeTable').DataTable({
+          ajax: 'data/arrays.txt',
+          columns: [
+            { data: 'emCard' },
+            { data: 'firstName' },
+            { data: 'lastName' },
+            { data: 'position' },
+            { data: 'department' },
+            { data: 'dateStart' },
+          ],
+        });
+      });
+    </script>
+
   </body>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js" integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk" crossorigin="anonymous"></script>
+
 </html>

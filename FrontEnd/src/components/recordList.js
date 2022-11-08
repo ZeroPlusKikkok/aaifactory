@@ -28,7 +28,7 @@ export default function EmployeeList() {
  // This method fetches the records from the database.
  useEffect(() => {
    async function getEmployees() {
-     const response = await fetch(`localhost:3000/api/employees/list`, {
+     const response = await fetch(`http://localhost:3000/api/employees/list`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
