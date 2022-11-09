@@ -2,6 +2,7 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const cors = require("cors");
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const passport = require('passport');
@@ -42,6 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressSession);
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cors());
 
 app.use('/', index);
 app.use('/api', api);

@@ -54,59 +54,71 @@
       </div>
     </nav>
 
-    
     <div>
       <h3>Employee List</h3>
-      <table id="EmployeeTable" class="table table-striped" style="width:100%">
+      <table class="table table-striped" id="EmployeeUl">
         <thead>
           <tr>
-            <th>Em Card</th>
+            <th>Em Code</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Position</th>
             <th>Department</th>
-            <th>Date Start</th>
-            <th>Action</th>
+            <th>Dtae Start</th>
           </tr>
         </thead>
+        <tbody>
+        </tbody>
         <tfoot>
           <tr>
-            <th>Em Card</th>
+            <th>Em Code</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Position</th>
             <th>Department</th>
-            <th>Date Start</th>
-            <th>Action</th>
+            <th>Dtae Start</th>
           </tr>
         </tfoot>
       </table>
+
     </div>
+        
 
     <script>
-      const getData = async () => {
-        const response = await fetch("http://localhost:3000/api/employees/list", {
-          method: "GET",
-        })
-        .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
-      };
-      getData();   
-      
-      $(document).ready(function () {
-        $('#EmployeeTable').DataTable({
-          ajax: 'data/arrays.txt',
-          columns: [
-            { data: 'emCard' },
-            { data: 'firstName' },
-            { data: 'lastName' },
-            { data: 'position' },
-            { data: 'department' },
-            { data: 'dateStart' },
-          ],
+
+      const employee_url = "http://localhost:3000/api/employees/list";
+
+      function showData(data) {
+        const EmployeeUl = document.querySelector('#EmployeeUl');
+        data.forEach(val => {
+          const myEl = document.createElement('tr');
+          myEl.innerText = `${val.emCard}`;
+          EmployeeUl.appendChild(myEl);
         });
+      }
+
+      fetch(employee_url)
+        .then((response) => response.json())
+        .then((data) => showData(data));
+
+      //async function getData() {
+      //  const response = await fetch(employee_url, {
+      //    method: "GET",
+      //  })
+      //  const data = await response.json();
+      //  console.log(data[0].firstName);
+      //};
+ 
+      //getData();
+
+      data.forEach((val, i) => {
+        Table += `<TD>${val}</TD>`;
+        const a = i +1;
+      if (a%cells==0&&a!=data.length){
+        Table += "</tr><tr>";
+      }
       });
+      
     </script>
 
   </body>
