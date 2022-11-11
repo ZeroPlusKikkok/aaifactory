@@ -131,6 +131,54 @@
       };
     }
 
+    function showUserEditBox(id) {
+      console.log(id);
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("GET", "http://localhost:3000/api/employees/list/"+id);
+      xhttp.send();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          const objects = JSON.parse(this.responseText);
+          const Employee = objects['Employee'];
+          console.log(Employee);
+          Swal.fire({
+            title: 'Edit Employee',
+            html:
+              '<input id="id" type="hidden" value='+user['id']+'>' +
+              '<input id="fname" class="swal2-input" placeholder="First" value="'+user['fname']+'">' +
+              '<input id="lname" class="swal2-input" placeholder="Last" value="'+user['lname']+'">' +
+              '<input id="username" class="swal2-input" placeholder="Username" value="'+user['username']+'">' +
+              '<input id="email" class="swal2-input" placeholder="Email" value="'+user['email']+'">',
+            focusConfirm: false,
+            preConfirm: () => {
+              userEdit();
+            }
+          })
+        }
+      };
+    }
+
+    function userEdit() {
+      const emCard = document.getElementById("emCard").value;
+      const firstName = document.getElementById("firstName").value;
+      const lastName = document.getElementById("lastName").value;
+      const position = document.getElementById("position").value;
+      const department = document.getElementById("department").value;
+      const dateStart = document.getElementById("dateStart").value;
+        
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("PUT", "http://localhost:3000/api/employees/update");
+      xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhttp.send(JSON.stringify());
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          const objects = JSON.parse(this.responseText);
+          Swal.fire(objects['message']);
+          loadTable();
+        }
+      };
+    }
+
     function loadTable() {
       const xhttp = new XMLHttpRequest();
       xhttp.open("GET", "http://localhost:3000/api/employees/list");

@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const cors = require("cors");
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const swal = require('sweetalert2');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const expressSession = require('express-session')({
@@ -44,6 +45,7 @@ app.use(expressSession);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors());
+//app.use(swal());
 
 app.use('/', index);
 app.use('/api', api);
