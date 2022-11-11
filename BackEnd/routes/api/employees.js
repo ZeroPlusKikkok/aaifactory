@@ -1,10 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const employee = require('../../models/employee');
+const Employee = require('../../models/employee');
 
 const router = express.Router();
-
-const Employee = require('../../models/employee');
 
 // CRUD ==> Create (POST) — Make something
 router.post('/create', (req, res) => {
@@ -31,7 +29,6 @@ router.post('/create', (req, res) => {
   });
 });
 
-
 // CRUD ==> Read (GET)_- Get something
 router.get('/list', (req, res, next) => {
   Employee.find((err, employees) => {
@@ -42,8 +39,19 @@ router.get('/list', (req, res, next) => {
   });
 });
 
+router.get('/list/:id', (req, res, next) => {
+  const id = req.params.id;
+
+  Employee.findById(id, (err, employees) => {
+    if (err) {
+      return res.send(err);
+    }
+    return res.json(employees);
+  });
+});
+
 // Update (PUT) — Change something
-router.put('/update/:Id', (req, res) => {
+router.put('/update/:id', (req, res) => {
 
   if (!req.body) {
     return res.status(400).send({
@@ -51,13 +59,14 @@ router.put('/update/:Id', (req, res) => {
     });
   }
 
-  const Id = req.params.Id;
+  const id = req.params.id;
 
-  Employee.findByIdAndUpdate(Id, req.body, (err, employees) => {
+  Employee.findByIdAndUpdate(id, req.body, (err, employees) => {
     if (err) {
       return res.send(err);
     }
     return res.send({
+      employees,
       message: "Employee was updated successfully!!"
     });
     // json(employees);
@@ -66,15 +75,16 @@ router.put('/update/:Id', (req, res) => {
 });
 
 // Delete (DELETE)– Remove something
-router.delete('/delete/:Id', (req, res) => {
+router.delete('/delete/:id', (req, res) => {
 
-  const Id = req.params.Id;
+  const id = req.params.id;
 
-  Employee.findByIdAndRemove(Id, req.body, (err, employees) => {
+  Employee.findByIdAndRemove(id, req.body, (err, employees) => {
     if (err) {
       return res.send(err);
     }
     return res.send({
+      employees,
       message: "Employee was delete successfully!!"
     });
     //json(employees);
